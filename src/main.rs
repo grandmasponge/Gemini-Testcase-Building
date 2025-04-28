@@ -1,11 +1,11 @@
-use std::{default, env::VarError, fmt::Display, fs::OpenOptions, io::Read};
+use std::{env::VarError, fmt::Display, fs::OpenOptions, io::Read};
 
 use dotenv::dotenv;
 use gemini_client_rs::{
     GeminiClient,
     types::{Content, ContentPart, GenerateContentRequest, PartResponse, Role},
 };
-use reqwest::{Client, Method, RequestBuilder, header::HeaderMap};
+use reqwest::{Client, Method};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
@@ -41,12 +41,17 @@ struct GeminiState<'a> {
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone, Default)]
+struct FileWrapper {
+    file: GeminiFile,
+}
+
+#[derive(Debug, Deserialize, Serialize, Clone, Default)]
 struct GeminiFile {
     name: Option<String>,
     #[serde(rename = "displayName")]
-    display_name: String,
+    display_name: Option<String>,
     #[serde(rename = "mimeType")]
-    mime_type: String,
+    mime_type: Option<String>,
     #[serde(rename = "sizeBytes")]
     size_bytes: Option<String>,
     #[serde(rename = "createTime")]
@@ -76,6 +81,8 @@ enum GeminiErrorType {
     PromptGenerationError,
     MissingRoleError,
     MissingPromptError,
+    InvalidHeader,
+    MissingHeader,
 }
 
 #[derive(Debug, Clone)]
@@ -110,65 +117,66 @@ impl<'a> GeminiState<'a> {
         }
     }
 
-    async fn upload_file(&self, file: GeminiFile, contents: String) -> Result<(), GeminiError> {
-        let mut client = Client::new();
+    pub async fn upload_file(
+        &self,
+        filename: String,
+        contents: String,
+    ) -> Result<FileWrapper, GeminiError> {
+        let client = Client::new();
         let url = format!(
-            "https://generativelanguage.googleapis.com/upload/v1beta/files?key=${}",
+            "https://generativelanguage.googleapis.com/upload/v1beta/files?key={}",
             self.api_key
         );
-        let mut headers = HeaderMap::default();
-
-        //apply google upload file headers
-        headers.insert("X-Goog-Protocol", "resumable");
-        headers.insert("X-Goog-Upload-Command", "start");
-        headers.insert(
-            "X-Goog-Upload-Header-Content-Length",
-            &contents.len().to_string(),
-        );
-        headers.insert("X-Goog-Upload-Header-Content-Type", "text/plain");
-        headers.insert("Content-Type", "application/json");
-        //Json Body for the file
 
         let json_body = json!({
-                "file": { "display_name": file.display_name }
-        })
-        .to_string();
-
-        let res = match client
-            .request(Method::POST, url)
-            .headers(headers)
-            .body(json_body)
-            .send()
-            .await
-        {
-            Ok(res) => res,
-            Err(_e) => {
-                return Err(GeminiError {
-                    err_type: GeminiErrorType::FailedRequest,
-                });
-            }
-        };
-
-        let res_headers = res.headers();
-        let upload_url = match res_headers.get("x-goog-upload-url") {
-            Some(url) => url,
-            None => {
-                return Err(GeminiError {
-                    err_type: GeminiErrorType::FailedRequest,
-                });
-            }
-        };
+            "file": { "display_name": filename, "mimeType" : "text/plain" }
+        });
+        
 
         let res = client
-            .request(Method::POST, upload_url)
-            .header("Content-Length", &contents.len().to_string())
-            .header("X-Goog-Upload-Offset", "0")
-            .header("X-Goog-Upload-Command", "upload, finalize")
-            .body(contents.as_bytes())
+            .request(Method::POST, url)
+            .header("X-Goog-Upload-Protocol", "resumable")
+            .header("X-Goog-Upload-Command", "start")
+            .header(
+                "X-Goog-Upload-Header-Content-Length",
+                contents.len().to_string(),
+            )
+            .header("X-Goog-Upload-Header-Content-Type", "text/plain")
+            .header("Content-Type", "application/json")
+            .body(json_body.to_string())
             .send()
-            .await;
+            .await
+            .map_err(|_| GeminiError {
+                err_type: GeminiErrorType::FailedRequest,
+            })?;
+        println!("{res:?}");
+       
+        let upload_url = match res.headers().get("x-goog-upload-url") {
+            Some(url) => url.to_str().unwrap().to_string(),
+            None => return Err(GeminiError { err_type: GeminiErrorType::MissingHeader })
+        };
 
-        Ok(())
+        println!("upload_url: {upload_url}");
+
+        let res = match client.request(Method::POST, upload_url)
+        .header("Content-Length", contents.len().to_string())
+        .header("X-Goog-Upload-Offset", "0")
+        .header("X-Goog-Upload-Command", "upload, finalize")
+        .body(contents)
+        .send()
+        .await
+        {
+            Ok(res) => res,
+            Err(_e) => return Err(GeminiError{err_type:GeminiErrorType::FailedRequest}),
+        };
+       
+        let res_text = res.text()
+        .await
+        .unwrap();
+
+        let val: FileWrapper = serde_json::from_str(&res_text).unwrap();
+
+        Ok(val)
     }
 
     async fn prompt(&self, content: Vec<Content>) -> Result<String, GeminiError> {
@@ -308,10 +316,13 @@ async fn main() {
     let model_name = "gemini-2.0-flash";
 
     let state = GeminiState::new(client, model_name, api_key);
+    
+    let uri = state.upload_file("test-fil1".to_string(), "test meow meow test meow".to_string()).await.unwrap();
+
     let _str = state
         .prompt(vec![Content {
             parts: vec![ContentPart::Text(String::from(
-                "Generate An Html table with CSS styling for any columns of your choice",
+                "extract the text from the followign test-fil1 document",
             ))],
             role: Role::User,
         }])
@@ -321,7 +332,10 @@ async fn main() {
 
 #[cfg(test)]
 mod tests {
-    use crate::retrive_document;
+    use gemini_client_rs::GeminiClient;
+    use crate::{get_api_key, retrive_document, GeminiState};
+
+
 
     #[test]
     fn file_test_prompt() {
@@ -330,7 +344,7 @@ mod tests {
 
         assert_eq!(
             buffer,
-            "Role:User|how mutch wood could a wood chuck chuck if a wood chuck could chuck wood?\n"
+            "Role:User|Prompt:how mutch wood could a wood chuck chuck if a wood chuck could chuck wood?\n"
         );
     }
 
