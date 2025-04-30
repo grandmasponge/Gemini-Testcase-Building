@@ -1,0 +1,274 @@
+<testing_knowledge_base>
+    <priority_levels>
+        <priority level="Critical">
+            <description>Issues that could cause catastrophic system failure or data loss</description>
+            <criteria>
+                - Affects core business functionality
+                - Blocks entire features or workflows
+                - Has significant financial impact
+                - Affects data integrity
+            </criteria>
+            <examples>
+                - Payment processing failure
+                - User authentication breakdown
+                - Data corruption scenarios
+            </examples>
+        </priority>
+        
+        <priority level="High">
+            <description>Major functionality issues that significantly impact user experience</description>
+            <criteria>
+                - Affects major business workflows
+                - Has workarounds but they're complex
+                - Impacts significant user base
+                - Performance degradation above threshold
+            </criteria>
+            <examples>
+                - UI rendering issues
+                - Slow response times
+                - Feature partial failure
+            </examples>
+        </priority>
+
+        <priority level="Medium">
+            <description>Issues that affect non-critical functionality</description>
+            <criteria>
+                - Has simple workarounds
+                - Affects minor features
+                - Limited user impact
+                - Non-critical performance issues
+            </criteria>
+            <examples>
+                - Minor UI glitches
+                - Non-critical feature bugs
+                - Documentation inconsistencies
+            </examples>
+        </priority>
+
+        <priority level="Low">
+            <description>Cosmetic or minor issues with minimal impact</description>
+            <criteria>
+                - No functional impact
+                - Aesthetic issues only
+                - Very limited user base affected
+            </criteria>
+            <examples>
+                - Styling inconsistencies
+                - Typos in non-critical text
+                - Nice-to-have improvements
+            </examples>
+        </priority>
+    </priority_levels>
+
+    <iso_25010_categories>
+        <category name="Functional Suitability">
+            <subcategories>
+                <subcategory name="Functional Completeness">
+                    <description>Degree to which the set of functions covers all specified tasks and objectives</description>
+                    <test_focus>Verify all specified functions are implemented</test_focus>
+                </subcategory>
+                <subcategory name="Functional Correctness">
+                    <description>Degree to which a product provides correct results with needed precision</description>
+                    <test_focus>Validate accuracy of calculations and data processing</test_focus>
+                </subcategory>
+                <subcategory name="Functional Appropriateness">
+                    <description>Degree to which functions facilitate accomplishment of specified tasks</description>
+                    <test_focus>Evaluate efficiency of function implementation</test_focus>
+                </subcategory>
+            </subcategories>
+        </category>
+
+        <category name="Performance Efficiency">
+            <subcategories>
+                <subcategory name="Time Behaviour">
+                    <description>Response and processing times and throughput rates</description>
+                    <test_focus>Measure response times and transaction rates</test_focus>
+                </subcategory>
+                <subcategory name="Resource Utilization">
+                    <description>Amounts and types of resources used</description>
+                    <test_focus>Monitor CPU, memory, disk usage</test_focus>
+                </subcategory>
+                <subcategory name="Capacity">
+                    <description>Maximum limits of product parameters</description>
+                    <test_focus>Test system under maximum load conditions</test_focus>
+                </subcategory>
+            </subcategories>
+        </category>
+
+<category name="Compatibility">
+            <subcategories>
+                <subcategory name=" Interoperability">
+                    <description>Degree to which a product can exchange information with other products and systems</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="Co-existence">
+                    <description>Degree to which a  product can perform its required functions efficiently whilst sharing a common environment and resources without impact on other products</description>
+                    <test_focus></test_focus>
+                </subcategory>
+            </subcategories>
+        </category>
+
+<category name="Usability”>
+            <subcategories>
+                <subcategory name="Appropriateness Recognisability">
+                    <description>Degree to which  a user can recognise whether a product is appropriate for their needs</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="Learnability">
+                    <description>Degree to which the functions of a product can be learnt to be used by specified users in a specified amount of time</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="Operability">
+                    <description>Degree to which a product has attributes that make it easy to operate</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="User Error Protection">
+                    <description>Degree to which a system prevents users against operation errors</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="User Interface Aesthetics">
+                    <description>Degree to which a user interface enables pleasing and satisfying interaction for the user</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="Accessibility">
+                    <description>Degree to which a product or system can be used by people with the widest range of characteristics and capabilities to achieve a specified goal in a specified context of use</description>
+                    <test_focus></test_focus>
+                </subcategory>
+            </subcategories>
+        </category>
+
+<category name="Reliability">
+            <subcategories>
+                <subcategory name="Maturity">
+                    <description>Degree to which a system meets needs for reliability under normal operation</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="Availability">
+                    <description>Degree to which a system is operational and accessible when required for use</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="Fault Tolerance">
+                    <description>Degree to which a system operates as intended despite the presence of hardware or software faults</description>
+                    <test_focus></test_focus>
+                </subcategory>
+                <subcategory name="Recoverability">
+                    <description>Degree to which, in the event of an interruption or a failure, a system can recover the data directly affected and re-establish the desired state of the system</description>
+                    <test_focus></test_focus>
+                </subcategory>
+            </subcategories>
+        </category>
+
+
+
+
+
+
+
+<category name="Security">
+            <subcategories>
+                <subcategory name=" Confidentiality>
+                    <description>Degree to which a product ensures that data are accessible only by those authorised to have access</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Integrity">
+                    <description>Degree to which a system prevents unauthorised access to, or modification of, computer programs or data</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Non-repudiation">
+                    <description>Degree to which actions or evens can be proven to have taken place, so that the events or actions cannot be repudiated later</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Accountability">
+                    <description>Degree to which the actions of an entity can be traced uniquely to the entity</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Authenticity">
+                    <description>Degree to which the identity of a subject or resource can be proved to be the one claimed</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+            </subcategories>
+        </category>
+
+<category name="Maintainability">
+            <subcategories>
+                <subcategory name="Modularity">
+                    <description>Degree to which a system is composed of discrete components such that a change to one component has minimal impact on other components</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Reusability">
+                    <description>Degree to which an asset can be used in more than one system, or in building other assets</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Analysability">
+                    <description>Degree of effectiveness and efficiency with which it is possible to assess the impact on a system of an intended change to one or more of its parts, or to diagnose a product for deficiencies or causes of failure, or to identify parts to be modified</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Modifiability">
+                    <description>Degree to which a system can be effectively and efficiently modified without introducing defects or degrading existing product quality</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+<subcategory name="Testability">
+                    <description>Degree of effectiveness and efficiency with which test criteria can be established for a product and tests can be performed to determine whether those criteria have been met</description>
+                    <test_focus> </test_focus>
+                </subcategory>
+            </subcategories>
+        </category>
+    </iso_25010_categories>
+
+    <requirement_categories>
+        <category name="Functional">
+            <description>Specific functions the system must perform</description>
+            <examples>
+                - User authentication
+                - Data processing rules
+                - Business logic implementation
+            </examples>
+        </category>
+
+        <category name="Non-Functional">
+            <description>Quality attributes and constraints</description>
+            <examples>
+                - Performance requirements
+                - Security requirements
+                - Usability requirements
+            </examples>
+        </category>
+
+        <!-- Additional requirement categories -->
+    </requirement_categories>
+</testing_knowledge_base>
+
+
+<query_handlers>
+    <handler type="priority_explanation">
+        <trigger_words>priority, importance, severity</trigger_words>
+        <response_template>
+            The {priority_level} priority indicates {description}.
+            This is used when:
+            {criteria}
+            For example: {examples}
+        </response_template>
+    </handler>
+    
+    <handler type="iso_category_explanation">
+        <trigger_words>ISO, category, classification</trigger_words>
+        <response_template>
+            The ISO 25010 category {category_name} refers to {description}.
+            When testing, we focus on: {test_focus}
+        </response_template>
+    </handler>
+</query_handlers>
+
+<relationship_rules>
+    <rule>
+        <name>priority_requirement_mapping</name>
+        <description>How priority levels map to requirement types</description>
+        <mappings>
+            <mapping>
+                <priority>Critical</priority>
+                <requirement_types>Core Functional, Security, Data Integrity</requirement_types>
+            </mapping>
+            <!-- Additional mappings -->
+        </mappings>
+    </rule>
+</relationship_rules>

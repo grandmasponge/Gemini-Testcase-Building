@@ -1,9 +1,9 @@
 use std::{env::VarError, fmt::Display, fs::OpenOptions, io::Read};
-
+use base64::prelude::*;
 use dotenv::dotenv;
 use gemini_client_rs::{
     GeminiClient,
-    types::{Content, ContentPart, GenerateContentRequest, PartResponse, Role},
+    types::{Content, ContentPart, GenerateContentRequest, PartResponse, Role, FileData},
 };
 use reqwest::{Client, Method};
 use serde::{Deserialize, Serialize};
@@ -83,6 +83,8 @@ enum GeminiErrorType {
     MissingPromptError,
     InvalidHeader,
     MissingHeader,
+    FileReadError,
+    MissingFileUri,
 }
 
 #[derive(Debug, Clone)]
@@ -115,6 +117,49 @@ impl<'a> GeminiState<'a> {
             model_name,
             api_key: key,
         }
+    }
+
+    pub async fn prompt(&self, filename: &str) -> Result<(), GeminiError> {
+        let mut files_uris = vec![];
+
+        let prompt_contents = retrive_document(filename)?;
+        let prompt = Prompt::extract(prompt_contents)?;
+
+        for file in prompt.files {
+            let file_contents = retrive_document(&file)?;
+            let base_contents = BASE64_STANDARD.encode(file_contents);
+            let wrapper = self.upload_file(file, base_contents)
+            .await?;
+            
+            files_uris.push(wrapper.file.uri);
+        }   
+
+
+        let mut content_part = vec![ContentPart::Text(prompt.prompt)];
+        for uri in files_uris {
+            match uri {
+                Some(u) => {
+                    content_part.push(ContentPart::FileData(FileData{
+                        mime_type: "text/plain".to_string(),
+                        file_uri: u.clone()
+                    }));
+                }
+                None => {
+                    return Err(GeminiError{err_type:GeminiErrorType::MissingFileUri});
+                }
+            }
+        }
+
+        let contents = vec![Content{
+            parts: content_part,
+            role: prompt.role 
+        }];
+
+        self.upload_prompt(contents).await?;
+
+
+        Ok(())
+
     }
 
     pub async fn upload_file(
@@ -179,10 +224,10 @@ impl<'a> GeminiState<'a> {
         Ok(val)
     }
 
-    async fn prompt(&self, content: Vec<Content>) -> Result<String, GeminiError> {
+    async fn upload_prompt(&self, content: Vec<Content>) -> Result<(), GeminiError> {
         let json_content = json!(
             {
-                "contents":content,
+                "contents": content,
             }
         );
 
@@ -220,7 +265,7 @@ impl<'a> GeminiState<'a> {
             }
         }
 
-        Ok(String::new())
+        Ok(())
     }
 }
 
@@ -250,7 +295,10 @@ impl Prompt {
                     prompt = Some(content.to_string());
                 }
                 "files" => {
-                    files = content.split(',').map(|s| s.trim().to_string()).collect();
+                    let prompt_files = content.split(',');
+                    for file in prompt_files {
+                        files.push(file.to_string());
+                    }
                 }
                 _ => {
                     return Err(GeminiError {
@@ -272,7 +320,7 @@ impl Prompt {
     }
 }
 
-fn retrive_document(filename: &str) -> Result<String, ()> {
+fn retrive_document(filename: &str) -> Result<String, GeminiError> {
     let file_res = OpenOptions::new().read(true).create(false).open(filename);
     let mut file = match file_res {
         Ok(f) => f,
@@ -281,7 +329,7 @@ fn retrive_document(filename: &str) -> Result<String, ()> {
                 "Failed open file at path: `{}` please make sure the file is at expected location",
                 filename
             );
-            return Err(());
+            return Err(GeminiError { err_type: GeminiErrorType::FileReadError} );
         }
     };
 
@@ -293,12 +341,12 @@ fn retrive_document(filename: &str) -> Result<String, ()> {
                 Ok(buffer)
             } else {
                 println!("file is empty");
-                Err(())
+                return Err(GeminiError { err_type: GeminiErrorType::FileReadError} );
             }
         }
         Err(_) => {
             println!("failed to read bytes from file please make sure the file is not corrupted");
-            Err(())
+            return Err(GeminiError { err_type: GeminiErrorType::FileReadError} );
         }
     }
 }
@@ -317,17 +365,22 @@ async fn main() {
 
     let state = GeminiState::new(client, model_name, api_key);
     
-    let uri = state.upload_file("test-fil1".to_string(), "test meow meow test meow".to_string()).await.unwrap();
+    //prompt 1 Inital prompt
+    state.prompt("./prompt/inital-prompt.txt").await.unwrap();
+    //prompt 2 Require generation
 
-    let _str = state
-        .prompt(vec![Content {
-            parts: vec![ContentPart::Text(String::from(
-                "extract the text from the followign test-fil1 document",
-            ))],
-            role: Role::User,
-        }])
-        .await
-        .unwrap();
+    //prompt 3 Generate test
+
+    //prompt 4 Generate test case description
+
+    //prompt 5 Explain test case properties
+
+    //prompt 6 Generate coverage report
+
+    //prompt 7 Generate traceability matrix
+
+    //prompt 8 Generate Gap report
+    
 }
 
 #[cfg(test)]
