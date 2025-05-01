@@ -1,0 +1,379 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Case Documentation Coverage</title>
+    <style>
+        .detailed-descriptions {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        .test-case-detail {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-case-detail h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+        }
+        .test-name {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .test-name:hover {
+            text-decoration: underline;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .table-container {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            position: sticky;
+            top: 0;
+        }
+        .coverage-status {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-decoration: underline;
+            display: inline-block;
+        }
+        .covered {
+            background-color: #e6ffe6;
+            color: #006600;
+        }
+        .not-covered {
+            background-color: #ffe6e6;
+            color: #cc0000;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        .requirement-quote {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Case Documentation Coverage</h1>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Test ID</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Test Type</th>
+                    <th>Priority</th>
+                    <th>Source in Spec</th>
+                    <th>ISO 25010 Category</th>
+                    <th>Coverage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TC-001</td>
+                    <td>Widget Configuration</td>
+                    <td>Verify the option to include/exclude Commitments is present in widget configuration.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Usability > Appropriateness Recognisability</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-001')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-002</td>
+                    <td>Widget Calculation</td>
+                    <td>Verify the widget calculations include Commitments when the setting is enabled.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Functional Suitability > Functional Correctness</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-002')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-003</td>
+                    <td>Widget Calculation</td>
+                    <td>Verify the widget calculations exclude Commitments when the setting is disabled.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Functional Suitability > Functional Correctness</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-003')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-004</td>
+                    <td>Widget Persistence</td>
+                    <td>Verify the include/exclude Commitments setting is saved correctly and persists across sessions.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Reliability > Maturity</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-004')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-005</td>
+                    <td>Admin Dashboard Configuration</td>
+                    <td>Verify the "Include Commitments" setting is available in the admin dashboard widget properties.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Usability > Learnability</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-005')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-006</td>
+                    <td>Admin Dashboard Configuration</td>
+                    <td>Verify the default value of "Include Commitments" setting is correctly applied to the widget.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Functional Suitability > Functional Completeness</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-006')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-007</td>
+                    <td>Widget Chart Display</td>
+                    <td>Verify Commitments are included in the widget chart when the setting is enabled.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Usability > User Interface Aesthetics</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-007')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-008</td>
+                    <td>Widget Chart Display</td>
+                    <td>Verify Commitments are excluded from the widget chart when the setting is disabled.</td>
+                    <td>Functional</td>
+                    <td>High</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Usability > User Interface Aesthetics</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-008')">Covered</span></td>
+                </tr>
+                  <tr>
+                    <td>TC-009</td>
+                    <td>Performance</td>
+                    <td>Verify that changing widget include/exclude Commitments setting does not impact performance of other widgets of the same type</td>
+                    <td>Non-Functional</td>
+                    <td>Medium</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Performance Efficiency > Time Behaviour</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-009')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-010</td>
+                    <td>Data Validation</td>
+                    <td>Verify the widget handles cases when there is no committment data for the period.</td>
+                    <td>Functional</td>
+                    <td>Medium</td>
+                    <td>MP-8660 Specification</td>
+                    <td>Functional Suitability > Functional Correctness</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-010')">Covered</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="analysisModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <div id="analysisContent"></div>
+        </div>
+    </div>
+    <script>
+        const analysisData = {
+            "TC-001": {
+                title: "Test Case: Verify the option to include/exclude Commitments is present in widget configuration",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'Give users the option to include or exclude Commitments from the widgets generally and per dashboard widget.'
+                    </div>
+                    <p>This test case verifies the UI element required to fulfill the user story. Passing this test ensures the feature is exposed to the user</p>
+                `
+            },
+            "TC-002": {
+                title: "Test Case: Verify the widget calculations include Commitments when the setting is enabled.",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'As a Mojo user I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.'
+                    </div>
+                    <p>This test case validates the core functionality of including commitments in the widget's calculations. It ensures that when a user enables this setting, the calculations are accurately reflected.</p>
+                `
+            },
+            "TC-003": {
+                title: "Test Case: Verify the widget calculations exclude Commitments when the setting is disabled.",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'As a Mojo user I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.'
+                    </div>
+                    <p>This test case validates the core functionality of excluding commitments in the widget's calculations. It ensures that when a user disables this setting, the calculations are accurately reflected.</p>
+                `
+            },
+            "TC-004": {
+                title: "Test Case: Verify the include/exclude Commitments setting is saved correctly and persists across sessions.",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'As a Mojo user I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.'
+                    </div>
+                    <p>This test case ensures that user preferences are properly saved and persist across multiple sessions.</p>
+                `
+            },
+            "TC-005": {
+                title: "Test Case: Verify the 'Include Commitments' setting is available in the admin dashboard widget properties.",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Default in Admin Dashboard>Widget properties<br>
+                        <strong>Requirement Text:</strong> 'A new choice will be included - ‘Include Commitments in calculations’'
+                    </div>
+                    <p>This test case verifies the visibility of setting in the admin configuration section.</p>
+                `
+            },
+            "TC-006": {
+                title: "Test Case: Verify the default value of 'Include Commitments' setting is correctly applied to the widget.",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'There will be a default choice setting in the Widget properties (Admin Dashboard>Mojo>Manage widgets)'
+                    </div>
+                    <p>This test case verifies that the widget behaves as intended based on the default configuration.</p>
+                `
+            },
+             "TC-007": {
+                title: "Test Case: Verify Committments are included in the widget chart when the setting is enabled",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'When - the Budget Vs Actual widget is viewed in chart format, Columns for Commitments, and Commitments plus Actual, will be available'
+                    </div>
+                    <p>This test case verifies that when the committments is turned on the data is reflected on the chart view of the widget</p>
+                `
+            },
+             "TC-008": {
+                title: "Test Case: Verify Committments are excluded in the widget chart when the setting is disabled",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'When - the Budget Vs Actual widget is viewed in chart format, Columns for Commitments, and Commitments plus Actual, will NOT be available'
+                    </div>
+                    <p>This test case verifies that when the committments is turned off the data is not reflected on the chart view of the widget</p>
+                `
+            },
+            "TC-009": {
+                title: "Test Case: Verify that changing widget include/exclude Commitments setting does not impact performance of other widgets of the same type",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> Description<br>
+                        <strong>Requirement Text:</strong> 'Changing the default settings in the widget for one copy of the widget does not change the performance of other widgets of the same type.'
+                    </div>
+                    <p>This test case verifies that changing widget settings does not have any unintended consequences on other widgets</p>
+                `
+            },
+             "TC-010": {
+                title: "Test Case: Verify the widget handles cases when there is no committment data for the period",
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-8660 Specification<br>
+                        <strong>Location:</strong> N/A <br>
+                        <strong>Requirement Text:</strong> N/A (Inferred error handling requirement)
+                    </div>
+                    <p>This test case makes sure there are no errors if there is no committment data for the current period</p>
+                `
+            },
+        };
+
+        function showAnalysis(testId) {
+            const modal = document.getElementById('analysisModal');
+            const content = document.getElementById('analysisContent');
+            content.innerHTML = analysisData[testId].analysis;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('analysisModal');
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('analysisModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
+```

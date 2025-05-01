@@ -1,0 +1,11 @@
+Role:User|Prompt:Explain why **TC-005** is classified as **High Priority** according to the knowledge base.  
+
+Your explanation should be based on:  
+
+- Business impact  
+
+- Risk analysis  
+
+- Complexity  
+
+- Potential failure consequences

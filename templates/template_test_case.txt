@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Case Documentation Coverage</title>
+    <style>
+        .detailed-descriptions {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        .test-case-detail {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-case-detail h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+        }
+        .test-name {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        .test-name:hover {
+            text-decoration: underline;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .table-container {
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            position: sticky;
+            top: 0;
+        }
+        .coverage-status {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-decoration: underline;
+            display: inline-block;
+        }
+        .covered {
+            background-color: #e6ffe6;
+            color: #006600;
+        }
+        .not-covered {
+            background-color: #ffe6e6;
+            color: #cc0000;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+        .requirement-quote {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 3px solid #007bff;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Case Documentation Coverage</h1>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Test ID</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Source in Spec</th>
+                    <th>ISO 25010 Category</th>
+                    <th>Coverage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>TC-001</td>
+                    <td>Form Creation</td>
+                    <td><a href="#TC-001" class="test-name">Basic form creation from MFS submission</a></td>
+                    <td>High</td>
+                    <td>Main Acceptance Criteria</td>
+                    <td>Functional Suitability > Functional Correctness</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-001')">Covered</span></td>
+                </tr>
+                <tr>
+                    <td>TC-002</td>
+                    <td>Form Creation</td>
+                    <td><a href="#TC-002" class="test-name">Form created in pending state</a></td>
+                    <td>High</td>
+                    <td>Acceptance Criteria</td>
+                    <td>Functional Suitability > Functional Correctness</td>
+                    <td><span class="coverage-status covered" onclick="showAnalysis('TC-002')">Covered</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="analysisModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="analysisContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const analysisData = {
+            'TC-001': {
+                title: 'Basic form creation from MFS submission',
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-9988<br>
+                        <strong>Location:</strong> Main acceptance criteria<br>
+                        <strong>Requirement Text:</strong><br>
+                        'GIVEN a Supplier has submitted an invoice via MFS<br>
+                        WHEN the form is submitted<br>
+                        THEN a Creditor Invoice form is created'<br><br>
+                        <strong>Traceability:</strong> This test case directly verifies the core functionality of form creation from MFS submission. It ensures that when a supplier submits an invoice through MFS, a corresponding Creditor Invoice form is created in the system.
+                    </div>
+                `
+            },
+            'TC-002': {
+                title: 'Form created in pending state',
+                analysis: `
+                    <h3>Requirement Coverage Analysis</h3>
+                    <div class="requirement-quote">
+                        <strong>Source Document:</strong> MP-9988<br>
+                        <strong>Location:</strong> Main acceptance criteria<br>
+                        <strong>Requirement Text:</strong><br>
+                        'THEN a Creditor Invoice form is created in the pending state'<br><br>
+                        <strong>Traceability:</strong> This test case validates that newly created forms are initialized in the correct pending state, ensuring proper workflow initialization.
+                    </div>
+                `
+            }
+        };
+
+        function showAnalysis(testId) {
+            const modal = document.getElementById('analysisModal');
+            const content = document.getElementById('analysisContent');
+            const analysis = analysisData[testId];
+            
+            if (analysis) {
+                content.innerHTML = `
+                    <h2>Test Case: ${analysis.title}</h2>
+                    ${analysis.analysis}
+                `;
+                modal.style.display = 'block';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('analysisModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('analysisModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

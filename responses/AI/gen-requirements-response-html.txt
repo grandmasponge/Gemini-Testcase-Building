@@ -1,0 +1,261 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Requirements Table</title>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+</style>
+</head>
+<body>
+
+<h2>Requirements Table</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>REQ-ID</th>
+      <th>TYPE</th>
+      <th>DESCRIPTION</th>
+      <th>SOURCE</th>
+      <th>EXACT-TEXT-FROM-SPECIFICATION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>REQ-001</td>
+      <td>Functional</td>
+      <td>Give users the option to include or exclude Commitments from the widgets generally and per dashboard widget.</td>
+      <td>MP-8660 Specification</td>
+      <td>Give users the option to include or exclude Commitments from the widgets generally and per dashboard widget</td>
+    </tr>
+    <tr>
+      <td>REQ-002</td>
+      <td>Functional</td>
+      <td>Changing the default settings in the widget properties does not change the performance of other widgets of the same type.</td>
+      <td>MP-8660 Specification</td>
+      <td>Changing the default settings in the widget for one copy of the widget does not change the performance of other widgetsof the same type.</td>
+    </tr>
+     <tr>
+      <td>REQ-003</td>
+      <td>Technical</td>
+      <td>Backend (for admin dashboard): Add a new column IncludeCommitments to the BudgetVsActualWidgetConfiguration table.</td>
+      <td>MP-8660 Specification</td>
+      <td>There is a BudgetVsActualWidgetConfiguration, another column will need to be added to the table called ‘IncludeCommitments’ or something which will be bit (0, 1)</td>
+    </tr>
+    <tr>
+      <td>REQ-004</td>
+      <td>Technical</td>
+      <td>Backend (for admin dashboard): Map IncludeCommitments in the BudgetVsActualMappingProfile.</td>
+      <td>MP-8660 Specification</td>
+      <td>Will need to map IncludeCommitments in the BudgetVsActualMappingProfile</td>
+    </tr>
+    <tr>
+      <td>REQ-005</td>
+      <td>Technical</td>
+      <td>Frontend (for admin dashboard): Add IncludeCommitments to BudgetVsActualConfigData.</td>
+      <td>MP-8660 Specification</td>
+      <td>Add IncludeCommitments to BudgetVsActualConfigData</td>
+    </tr>
+    <tr>
+      <td>REQ-006</td>
+      <td>Technical</td>
+      <td>Frontend (for admin dashboard): Create a new selector in budget-vs-actual-config.selectors.ts to get the IncludeCommitments.</td>
+      <td>MP-8660 Specification</td>
+      <td>In budget-vs-actual-config.selectors.ts, create a new selector to get the IncludeCommitments</td>
+    </tr>
+    <tr>
+      <td>REQ-007</td>
+      <td>Technical</td>
+      <td>Frontend (for admin dashboard): Create a new method in budget-vs-actual-config-facade.service.ts for getting whether to include commitments.</td>
+      <td>MP-8660 Specification</td>
+      <td>In budget-vs-actual-config-facade.service.ts, create a new method for getting whether to include commitments (call the above newly created selector)</td>
+    </tr>
+    <tr>
+      <td>REQ-008</td>
+      <td>Technical</td>
+      <td>Frontend (for admin dashboard): Include IncludeCommitments in createSaveRequest method and push an IncludeCommitments field (dropdown) in getAdminForm method in budget-vs-actual-admin-handler.ts.</td>
+      <td>MP-8660 Specification</td>
+      <td>In budget-vs-actual-admin-handler.ts, in the createSaveRequest method we'll need to include IncludeCommitments, and in getAdminForm method we'll need to push an IncludeCommitments field, which will be a dropdown (similar to Default period one), with the following option: Yes/No</td>
+    </tr>
+    <tr>
+      <td>REQ-009</td>
+      <td>Functional</td>
+      <td>Frontend (for admin dashboard): For overrideable Include commitments front-end, in mojo-budget-vs-actual-widget.component.html add a  with custom content.</td>
+      <td>MP-8660 Specification</td>
+      <td>in mojo-budget-vs-actual-widget.component.html add a with custom content (similar to the way it's done in pma-document-centre-widget.component.html)</td>
+    </tr>
+    <tr>
+      <td>REQ-010</td>
+      <td>Technical</td>
+      <td>Frontend (for admin dashboard): Filter data based on the saved configuration in budget-vs-actual selector component.</td>
+      <td>MP-8660 Specification</td>
+      <td>In budget-vs-actual selector commitment data will need to be filtered out based on whatever config is saved.</td>
+    </tr>
+    <tr>
+      <td>REQ-011</td>
+      <td>Technical</td>
+      <td>Chart component should show/hide commitments, this may need to have includeCommitments values passed through parent component.</td>
+      <td>MP-8660 Specification</td>
+      <td>For charts in mojo-budget-vs-actual-chart component, there is a property hasCommitments which decides whether to show/hide commitments, this may need to be passed in through the parent component to also include the saved “IncludeCommitments” value</td>
+    </tr>
+    <tr>
+      <td>REQ-012</td>
+      <td>Functional</td>
+      <td>As a Mojo user I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.</td>
+      <td>MP-8660 Specification</td>
+      <td>As a Mojo user I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.</td>
+    </tr>
+    <tr>
+      <td>REQ-013</td>
+      <td>Usability</td>
+      <td>A new choice will be included - Include Commitments in calculations.</td>
+      <td>MP-8660 Specification</td>
+      <td>A new choice will be included - ‘Include Commitments in calculations’</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
+```et</td>
+            <td>The Dropdown options will only allow one to be chosen at a time and will be Default ( Yes ), Yes and No where the bracketed text will be ‘Yes’ if the default setting is yes or ‘No’ if the default setting is No</td>
+        </tr>
+        <tr>
+            <td>REQ-011</td>
+            <td>Functional</td>
+            <td>Choosing Default will cause the Widget to behave according to Admin Dashboard settings (Commitments in Variance Calcs, ‘Commitments’ and ‘Actual plus Commitments’ column choice available) where there are commitment for that period.</td>
+            <td>Required - Dashboard widget</td>
+            <td>Default will be ignored. The widget will behave as currently where Variance calculations include any commitments and the column choices for ‘Commitments’ and ‘Actual plus Commitments’ will be available where there are commitment for that period</td>
+        </tr>
+        <tr>
+            <td>REQ-012</td>
+            <td>Functional</td>
+            <td>Choosing 'No' will cause the widget to ignore any commitments in calculations and the column choices for ‘Commitments’ and ‘Actual plus Commitments’ will not be available in any situation.</td>
+            <td>Required - Dashboard widget</td>
+            <td>No Default will be ignored. The widget will ignore any commitments in calculations and the column choices for ‘Commitments’ and ‘Actual plus Commitments’ will not be available in any situation.</td>
+        </tr>
+         <tr>
+            <td>REQ-013</td>
+            <td>Functional</td>
+            <td>The Edit Filters dialog should use a dropdown to be consistent with the Default / Yes / No selection in User Preferences.</td>
+            <td>Comments</td>
+            <td>IMO the Edit Filters dialog should use a dropdown to be consistent with the Default / Yes / No selection in User Preferences -</td>
+        </tr>
+        <tr>
+            <td>REQ-014</td>
+            <td>Functional</td>
+            <td>When the Budget vs Actual widget is viewed in chart format and the 'Include Commitments in calculations' setting is 'Default' and the Default setting in manage my widgets is 'Yes', and the period has commitments the columns for Commitments and Commitments plus Actual, will be available, and the calculation for Variance columns will include the commitment value.</td>
+            <td>Acceptance Criteria</td>
+            <td>Given - the user Is viewing the Mojo Vs Actual widget When - the Filter icon is clicked Then - the filter window will include the ‘Include Commitments in the widget columns and calculations’ choices of Default (xxx) - (xxx) will be either Yes or No depending on the default setting in system admin o Yes o No</td>
+        </tr>
+        <tr>
+            <td>REQ-015</td>
+            <td>Functional</td>
+            <td>When the Budget vs Actual widget is viewed in chart format and the 'Include Commitments in calculations' setting is 'Default' and the Default setting in manage my widgets is 'No', and the period has commitments the columns for Commitments and Commitments plus Actual, will NOT be available, and the calculation for Variance columns will exclude the commitment value.</td>
+            <td>Acceptance Criteria</td>
+            <td>Given - The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to Default, and The Default setting in manage my widgets is set to No, and The specific property has commitments for the period When - the Budget Vs Actual widget is viewed in chart format Then - o Columns for o Commitments, and o Commitments plus Actual, will Not be available o the calculation for Variance columns will exclude the commitment value</td>
+        </tr>
+        <tr>
+            <td>REQ-016</td>
+            <td>Functional</td>
+            <td>When the Budget vs Actual widget is viewed in chart format and the 'Include Commitments in calculations' setting is 'Yes', and the Default setting in manage my widgets is 'No', and the period has commitments the columns for Commitments and Commitments plus Actual, WILL be available, and the calculation for Variance columns will include the commitment value.</td>
+            <td>Acceptance Criteria</td>
+            <td>Given - The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to ‘Yes’, and The Default setting in manage my widgets is set to No, and The specific property has commitments for the period When - the Budget Vs Actual widget is viewed in chart format Then - o Columns for o Commitments, and o Commitments plus Actual, will be available o the calculation for Variance columns will include the commitment value More</td>
+        </tr>
+         <tr>
+            <td>REQ-017</td>
+            <td>Functional</td>
+            <td>When the Budget vs Actual widget is viewed in Graph format and the 'Include Commitments in calculations' setting is 'Default' and the Default setting in manage my widgets is 'Yes', and the period has commitments then commitments will be included in the graph bars as lighter green and behave as currently, and the Pop-up window for the graph bars will include the funds committed.</td>
+            <td>Acceptance Criteria</td>
+            <td>Given - The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to Default, and The Default setting in manage my widgets is set to Yes, and The specific property has commitments for the period When - the Budget Vs Actual widget is viewed in Graph format Then - o commitments will be included in the Graph bars as lighter green and behave as currently o the Pop-up window for the graph bars will include the funds committed.</td>
+        </tr>
+        <tr>
+            <td>REQ-018</td>
+            <td>Functional</td>
+            <td>When the Budget vs Actual widget is viewed in Graph format and the 'Include Commitments in calculations' setting is 'Default' and the Default setting in manage my widgets is 'No', and the period has commitments then No commitments will be included in the graph</td>
+            <td>Acceptance Criteria</td>
+            <td>Given - The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to Default, and The Default setting in manage my widgets is set to No, and The specific property has commitments for the period When - the Budget Vs Actual widget is viewed in graph format Then - No commitments will be included in the graph</td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
+```)</td>
+      <td>In filter-editor-dialog component you may need to add an input property showQueryBuilder (which is set to true by default) to be able to hide the query builder in the filter dialog.</td>
+    </tr>
+    <tr>
+      <td>REQ-010</td>
+      <td>Data Persistence</td>
+      <td>Save the filter (IncludeCommitments choice) in a similar way to how doc center saves IncludeParents etc. in DashboardWidgetConfiguration.</td>
+      <td>Development Approach: Front-end (For overridable Include Commitments front-end)</td>
+      <td>The filter can be saved in a similar way to the way doc center does currently for IncludeParents etc., in the table DashboardWidgetConfiguration</td>
+    </tr>
+    <tr>
+      <td>REQ-011</td>
+      <td>Technical</td>
+      <td>Filter commitment data based on the saved configuration in budget-vs-actual selector.</td>
+      <td></td>
+      <td>In budget-vs-actual selector commitment data will need to be filtered out based on whatever config is saved</td>
+    </tr>
+    <tr>
+      <td>REQ-012</td>
+      <td>UI</td>
+      <td>Pass the hasCommitments property to mojo-budget-vs-actual-chart component to show/hide commitments. This may need to include the saved "IncludeCommitments" value.</td>
+      <td></td>
+      <td>for charts in mojo-budget-vs-actual-chart component, there is a property hasCommitments which decides whether to show/hide commitments, this may need to be passed in through the parent component to also include the saved “IncludeCommitments" value</td>
+    </tr>
+		<tr>
+      <td>REQ-013</td>
+      <td>Functional</td>
+      <td>As a Mojo user, I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.</td>
+      <td>Description</td>
+      <td>As a Mojo user I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.</td>
+    </tr>
+		<tr>
+      <td>REQ-014</td>
+      <td>Admin</td>
+      <td>A new choice will be included in Admin Dashboard>Widget properties - "Include Commitments in calculations"
+        There will be a Yes/No dropdown choice which will be the default for this widget.</td>
+      <td>Required - Default in Admin Dashboard>Widget properties</td>
+      <td>A new choice will be included - "Include Commitments in calculations"
+        There will be a Yes/No dropdown choice which will be the default for this widget</td>
+    </tr>
+		<tr>
+      <td>REQ-015</td>
+      <td>User Interface</td>
+      <td>A new choice “Include Commitments in calculations” will be add on the same row as Widget Title. The Dropdown options will only allow one to be chosen at a time and will be Default ( Yes ), Yes or No</td>
+      <td>Required - Dashboard widget</td>
+      <td>A new choice “Include Commitments in calculations” will be add on the same row as Widget Title. The Dropdown options will only allow one to be chosen at a time and will be Default ( Yes ), Yes or No</td>
+    </tr>
+		<tr>
+      <td>REQ-016</td>
+      <td>Graph Presentation</td>
+      <td>When the Budget Vs Actual widget is viewed in Graph format and if the default setting is set to "Yes" then Commitments will be included in the Graph bars as lighter green and the pop-up window for the graph bars will include the funds committed.</td>
+      <td>Acceptance Criteria</td>
+      <td>When the Budget Vs Actual widget is viewed in Graph format and if the default setting is set to "Yes" then Commitments will be included in the Graph bars as lighter green and the pop-up window for the graph bars will include the funds committed.</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
+```

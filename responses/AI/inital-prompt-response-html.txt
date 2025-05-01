@@ -1,0 +1,218 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test Case Table</title>
+<style>
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* The actual popup (hidden by default) */
+  .popuptext {
+    visibility: hidden;
+    width: 400px;
+    background-color: #555;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -200px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  /* Popup arrow */
+  .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+
+  /* Show the popup when hovering over the popup text */
+  .popup:hover .popuptext {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<h2>Test Case Table</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Test ID</th>
+      <th>Category</th>
+      <th>Description</th>
+      <th>Test Type</th>
+      <th>Priority</th>
+      <th>Source in Spec</th>
+      <th>ISO 25010 Category</th>
+      <th>Coverage Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TC-001</td>
+      <td>Authentication</td>
+      <td>Verify user login with valid credentials</td>
+      <td>Functional</td>
+      <td>Critical
+        <div style="display:none">Rationale: Core functionality, workflow blocking.</div>
+      </td>
+      <td>Section 3.1</td>
+      <td>Security</td>
+      <td>Covered
+        <div class="popup"><span class="popuptext">
+        Source Document: Authentication Specification
+        <br>Location: Section 3.1
+        <br>Requirement Text: 'The system shall allow users to log in with a valid username and password.'
+        <br>Traceability: This test case verifies the core authentication functionality as specified in section 3.1 of the Authentication Specification.
+        </span>Requirement Evidence</div>
+      </td>
+    </tr>
+    <tr>
+      <td>TC-002</td>
+      <td>Authentication</td>
+      <td>Verify system prevents user login with invalid credentials</td>
+      <td>Functional</td>
+      <td>High
+        <div style="display:none">Rationale: Workflow blocking, significant user impact.</div>
+      </td>
+      <td>Section 3.2</td>
+      <td>Security</td>
+      <td>Covered
+        <div class="popup"><span class="popuptext">
+        Source Document: Authentication Specification
+        <br>Location: Section 3.2
+        <br>Requirement Text: 'The system shall reject login attempts made with invalid usernames or passwords.'
+        <br>Traceability: This test case ensures that invalid login attempts are correctly handled according to section 3.2 of the Authentication Specification.
+        </span>Requirement Evidence</div>
+      </td>
+    </tr>
+    <tr>
+      <td>TC-003</td>
+      <td>Form Creation</td>
+      <td>Verify form creation with all valid fields.</td>
+      <td>Functional</td>
+      <td>High
+        <div style="display:none">Rationale: Major workflow, complex workarounds.</div>
+      </td>
+      <td>Section 4.1</td>
+      <td>Functional Suitability</td>
+      <td>Covered
+        <div class="popup"><span class="popuptext">
+        Source Document: Form Management Specification
+        <br>Location: Section 4.1
+        <br>Requirement Text: 'The system shall allow users to create forms with all specified valid fields.'
+        <br>Traceability: This test case validates the core form creation functionality using valid data inputs, in accordance with section 4.1 of the Form Management Specification.
+        </span>Requirement Evidence</div>
+      </td>
+    </tr>
+    <tr>
+      <td>TC-004</td>
+      <td>Form Creation</td>
+      <td>Verify form creation rejects invalid data types in specific fields.</td>
+      <td>Error</td>
+      <td>Critical
+        <div style="display:none">Rationale: Core functionality, data integrity.</div>
+      </td>
+      <td>Section 4.2</td>
+      <td>Reliability</td>
+      <td>Covered
+        <div class="popup"><span class="popuptext">
+        Source Document: Form Management Specification
+        <br>Location: Section 4.2
+        <br>Requirement Text: 'The system must validate all form fields and reject submissions containing invalid data types.'
+        <br>Traceability: This test case ensures data integrity by verifying that the system rejects invalid data, as specified in section 4.2 of the Form Management Specification.
+        </span>Requirement Evidence</div>
+      </td>
+    </tr>
+    <tr>
+      <td>TC-005</td>
+      <td>Integration</td>
+      <td>Verify data transfer between Form Creation and Data Storage modules.</td>
+      <td>Integration</td>
+      <td>High
+        <div style="display:none">Rationale: Major workflows, significant user impact.</div>
+      </td>
+      <td>Section 5.1</td>
+      <td>Compatibility</td>
+      <td>Covered
+        <div class="popup"><span class="popuptext">
+        Source Document: System Integration Specification
+        <br>Location: Section 5.1
+        <br>Requirement Text: 'The Form Creation module must seamlessly integrate with the Data Storage module to ensure no data loss.'
+        <br>Traceability: This test case verifies the data integration between two core modules as defined in section 5.1 of the System Integration Specification.
+        </span>Requirement Evidence</div>
+      </td>
+    </tr>
+    <tr>
+      <td>TC-006</td>
+      <td>Performance</td>
+      <td>Verify form submission response time is within acceptable limits.</td>
+      <td>Functional</td>
+      <td>Medium
+        <div style="display:none">Rationale: Minor features, limited impact.</div>
+      </td>
+      <td>Section 6.1</td>
+      <td>Performance Efficiency</td>
+      <td>Covered
+        <div class="popup"><span class="popuptext">
+        Source Document: Performance Requirements Specification
+        <br>Location: Section 6.1
+        <br>Requirement Text: 'Form submission response time must be less than 3 seconds under normal load.'
+        <br>Traceability: This test case validates the performance of the form submission process, as detailed in section 6.1 of the Performance Requirements Specification.
+        </span>Requirement Evidence</div>
+      </td>
+    </tr>
+    <tr>
+      <td>TC-007</td>
+      <td>Reporting</td>
+      <td>Verify generation of daily reports based on form submissions.</td>
+      <td>Functional</td>
+      <td>Medium
+        <div style="display:none">Rationale: Minor features, limited impact.</div>
+      </td>
+      <td>Section 7.1</td>
+      <td>Functional Suitability</td>
+      <td>Not Covered
+        <div class="popup"><span class="popuptext">
+        Coverage is missing because there is no current test to validate the 'generation of daily reports based on form submissions' requirement.
+        <br>Related Requirements: Reporting Specification, Section 7.1
+        <br>Coverage Gap: Requires the development of a new test case to validate the data and format of generated reports.
+        </span>Requirement Evidence</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
+```

@@ -1,15 +1,17 @@
-use std::{env, fs::OpenOptions, io::{BufWriter, Write}, path::Path};
+use std::{env, fs::OpenOptions, io::{BufWriter, Write}, path::Path, time::Duration};
 
 use gemini_client_rs::{types::{Content, ContentPart, FileData, GenerateContentRequest, PartResponse}, GeminiClient};
 use base64::{prelude::BASE64_STANDARD, Engine};
 use reqwest::{Client, Method};
 use serde_json::json;
+use tokio::time::sleep;
 use crate::{prompt::Prompt, retrive_document, GeminiError, GeminiErrorType};
 use serde::{Serialize, Deserialize};
 
 pub struct GeminiState<'a> {
     pub client: GeminiClient,
     pub model_name: &'a str,
+    pub history: Vec<Content>,
     api_key: String,
 }
 
@@ -20,10 +22,11 @@ impl<'a> GeminiState<'a> {
             client,
             model_name,
             api_key: key,
+            history: vec![],
         }
     }
 
-    pub async fn prompt(&self, filename: &str) -> Result<GeminiResponse, GeminiError> {
+    pub async fn prompt(&mut self, filename: &str) -> Result<GeminiResponse, GeminiError> {
         let mut files_uris = vec![];
 
         let prompt_contents = retrive_document(filename)?;
@@ -54,12 +57,11 @@ impl<'a> GeminiState<'a> {
             }
         }
 
-        let contents = vec![Content{
-            parts: content_part,
-            role: prompt.role 
-        }];
+        self.history.push(Content { parts: content_part, role: prompt.role });
 
-        let res = self.upload_prompt(contents).await?;
+        
+        let res = self.upload_prompt(&self.history).await?;
+        self.history.push(Content { parts: vec![ContentPart::Text(res.clone())], role: gemini_client_rs::types::Role::Model });
 
 
         Ok(GeminiResponse { filename: filename.to_string(), response: res })
@@ -106,6 +108,7 @@ impl<'a> GeminiState<'a> {
         };
 
         println!("upload_url: {upload_url}");
+        sleep(Duration::from_secs(3)).await;
 
         let res = match client.request(Method::POST, upload_url)
         .header("Content-Length", contents.len().to_string())
@@ -128,7 +131,7 @@ impl<'a> GeminiState<'a> {
         Ok(val)
     }
 
-    async fn upload_prompt(&self, content: Vec<Content>) -> Result<String, GeminiError> {
+    async fn upload_prompt(&self, content: &Vec<Content>) -> Result<String, GeminiError> {
         let json_content = json!(
             {
                 "contents": content,

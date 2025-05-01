@@ -1,0 +1,209 @@
+Budget vs Actual 7.0.0+ (MP-10159) 
+ [MP-8660] BvA Widget - Give users the option to include or exclude Commitments from the widgets generally and per dashboard widget Created: 14/Feb/24  Updated: 11/Feb/25 
+Status:	In Development
+Project:	Mojo Project
+
+Components:	Mojo (Dashboard) 
+
+Affects versions:	None 
+Fix versions:	7.0.0 
+
+Parent:	Budget vs Actual 7.0.0+
+
+
+Type: 	Story 	Priority: 	High 
+Reporter: 	Colin Harrop 
+Assignee: 	Tony Murrell 
+
+Resolution: 	Unresolved 	Votes: 	0 
+Labels: 	None 
+Remaining Estimate:	Not Specified 
+Time Spent:	Not Specified 
+Original estimate:	Not Specified 
+
+Attachments: 	 8660 2.png      8660 1a.png      8660 3.png      image-20240221-163242.png      image-20240501-124712.png     
+Issue links: 	Blocks
+blocks 	MP-8689 
+BvA Widget - Where the user has chose... 	Tech Refinement 
+Relates
+relates to 	MP-8528 
+6.70.20 (P3) All products - Child/par... 	Done 
+relates to 	MP-8703 
+6.80.0 Debtor history reporting seque... 	Done 
+
+Application:	Mojo-Platform 
+Story Author:	Colin Harrop 
+Epic Link:	Budget vs Actual 7.0.0+ 
+
+Sprint:	MS 2025 02 GENERAL, MS 2025 03 GENERAL
+Test Notes:	High Level Test Notes - for review and test case generation to be done.
+The acceptance criteria cover the specific situations that will need testing.
+In addition there needs to be testing for
+•	Changing the default settings in the widget properties 
+o	when a user has set User defined on the dashboard widget 
+	does not change the behaviour of the widget (except when the choice is Default) as the widget choices should apply
+•	Changing the default settings in the widget for one copy of the widget 
+o	does not change the performance of other widgets of the same type.
+•	
+Development Approach:	Backend (for admin dashboard): 
+•	There is a BudgetVsActualWidgetConfiguration, another column will need to be added to the table called “IncludeCommitments“ or something which will be bit (0, 1)
+•	IncludeCommitments will need to be added to BudgetVsActualWidgetConfiguration and BudgetVsActualConfigurationModel
+•	Will need to map IncludeCommitments in the BudgetVsActualMappingProfile
+Front-end (for admin dashboard):
+•	Add IncludeCommitments to BudgetVsActualConfigData
+•	In budget-vs-actual-config.selectors.ts, create a new selector to get the IncludeCommitments
+•	In budget-vs-actual-config-facade.service.ts, create a new method for getting whether to include commitments (call the above newly created selector)
+•	In budget-vs-actual-admin-handler.ts, in the createSaveRequest method we’ll need to include IncludeCommitments, and in getAdminForm method we’ll need to push an IncludeCommitments field, which will be a dropdown (similar to Default period one), with the following option: 
+o	Yes
+o	No
+For overridable Include commitments front-end (there shouldn’t be any backend changes needed for this)
+•	in mojo-budget-vs-actual-widget.component.html add a <mojo-filter-editor-dialog> with custom content (similar to the way it’s done in pma-document-centre-widget.component.html)
+•	in filter-editor-dialog component you may need to add an input property showQueryBuilder (which is set to true by default) to be able to hide the query builder in the filter dialog.-
+•	The filter can be saved in a similar way to the way doc centre does currently for IncludeParents etc., in the table DashboardWidgetConfiguration 
+•	this.dispatcher.dispatch(
+•	      widgetConfigActions.saveDashboardWidgetConfiguration({
+•	        widgetId: this.widget.id,
+•	        config: cfg,
+•	      }),
+    );
+•	In budget-vs-actual selector commitment data will need to be filtered out based on whatever config is saved
+•	for charts in mojo-budget-vs-actual-chart component, there is a property hasCommitments which decides whether to show/hide commitments, this may need to be passed in through the parent component to also include the saved “IncludeCommitments” value
+Acceptance Criteria:	Given - the user Is in the Admin Dashboard>Mojo Manage my widgets
+•	When - the widget properties for widgets of a type ‘MojoBudgetVsActualWidget’ are viewed
+•	Then - there will be a choice row for “Include Commitments in Calculations” with a dropdown containing ‘Yes’ and 'No' options
+Given - the ' include Commitments in Calculations' choice in the 'MojoBudgetVsActualWidget' properties is being viewed
+•	When - ‘Yes’ is chosen
+•	Then - the Row field will be populated with ‘Yes’
+Given - the ' include Commitments in Calculations' choice in the 'MojoBudgetVsActualWidget' properties is being viewed
+•	When - ‘No’ is chosen
+•	Then - the Row field will be populated with ‘No’
+Given - the user Is viewing the Mojo Vs Actual widget 
+•	When - the Filter icon is clicked
+•	Then - the filter window will include the ‘Include Commitments in the widget columns and calculations’ choices of 
+o	Default (xxx) - (xxx) will be either Yes or No depending on the default setting in system admin
+o	Yes
+o	No
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to Default, and
+The Default setting in manage my widgets is set to Yes, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in chart format
+•	Then - 
+o	Columns for 
+	Commitments, and
+	Commitments plus Actual, will be available
+o	the calculation for Variance columns will include the commitment value
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to Default, and
+The Default setting in manage my widgets is set to No, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in chart format
+•	Then - 
+o	Columns for 
+	Commitments, and
+	Commitments plus Actual, will Not be available
+o	the calculation for Variance columns will exclude the commitment value
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to ‘No’, and
+The Default setting in manage my widgets is set to Yes, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in chart format
+•	Then - 
+o	Columns for 
+	Commitments, and
+	Commitments plus Actual, will Not be available
+o	the calculation for Variance columns will exclude the commitment value
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to 'Yes', and
+The Default setting in manage my widgets is set to No, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in chart format
+•	Then - 
+o	Columns for 
+	Commitments, and
+	Commitments plus Actual, will be available
+o	the calculation for Variance columns will include the commitment value
+…More
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to Default, and
+The Default setting in manage my widgets is set to Yes, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in Graph format
+•	Then - 
+o	commitments will be included in the Graph bars as lighter green and behave as currently
+o	the Pop-up window for the graph bars will include the funds committed.
+ 
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to Default, and
+The Default setting in manage my widgets is set to No, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in graph format
+•	Then - No commitments will be included in the graph
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to ‘No’, and
+The Default setting in manage my widgets is set to Yes, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in chart format
+•	Then - 
+o	Columns for 
+	Commitments, and
+	Commitments plus Actual, will Not be available
+o	the calculation for Variance columns will exclude the commitment value
+Given - 
+The user setting in the Budget Vs Actual dashboard widget for ‘Include Commitments in the widget columns and calculations’ is set to 'Yes', and
+The Default setting in manage my widgets is set to No, and
+The specific property has commitments for the period
+•	When - the Budget Vs Actual widget is viewed in chart format
+•	Then - 
+o	Columns for 
+	Commitments, and
+	Commitments plus Actual, will be available
+o	the calculation for Variance columns will include the commitment value
+Refined By:	General, P2P 
+Lead - SIT:	Christopher Young 
+Lead - Dev:	Paul Aylett 
+
+ Description  	 
+As a Mojo user I wish to control whether Commitments are included in my Service charge reviews when using the Budget v Actual widget.
+There will be a default choice setting in the Widget properties (Admin Dashboard>Mojo>Manage widget)
+There will be a Choice setting on the face of the widget (within the Filter icon) that will allow the individual user to override the default setting thus switching between including and excluding Commitments. 
+Required
+•	Default in Admin Dashboard>Widget properties
+A new choice will be included - “Include Commitments in calculations”
+ 
+There will be a Yes/No dropdown choice which will be the default for this widget 
+Where: 
+Yes is chosen. The widget will behave as currently where Variance calculations include any commitments and the column choices for ‘Commitments’ and 'Actual plus Commitments' will be available where there are commitment for that period.
+No is chosen. The widget will ignore any commitments in calculations and the column choices for ‘Commitments' and 'Actual plus Commitments’ will not be available in any situation 
+The above setting is a default and so can be overwritten on the Dashboard widget itself.
+When upgrading to this version, the option will be set to ‘Yes’ on install.
+•	Dashboard widget
+A new choice “Include Commitments in calculations” will be add on the same row as the Widget Title.
+This new section will move to ensure no overlapping will occur with the title on the left or the Icons on the right.
+ 
+ 
+The Dropdown options will only allow one to be chosen at a time and will be 
+•	Default ( Yes ) 
+o	where the bracketed text will be 
+	'Yes' if the default setting is yes
+	‘No’ if the default setting is No
+•	Yes 
+o	Default will be ignored. The widget will behave as currently where Variance calculations include any commitments and the column choices for ‘Commitments’ and 'Actual plus Commitments' will be available where there are commitment for that period
+•	No 
+o	Default will be ignored. The widget will ignore any commitments in calculations and the column choices for ‘Commitments' and 'Actual plus Commitments’ will not be available in any situation
+
+
+ Comments  	 
+Comment by Jeremy Jee [ 01/May/24 ] 
+
+IMHO the Edit Filters dialog should use a dropdown to be consistent with the Default / Yes / No selection in User Preferences -
+ 
+Comment by Tony Murrell [ 07/Feb/25 ] 
+
+ Flag added 
+I’ve spent far too much time trying to get this to work. The code is there, it just needs some adjustments. Blocked on getting help from a senior.
+Comment by Tony Murrell [ 10/Feb/25 ] 
+
+ Flag removed 
+Senior is now on the case…
+Generated at Tue Feb 11 11:42:02 GMT 2025 by Daniel Trusler using Jira 1001.0.0-SNAPSHOT#100279-rev:0c5ec5823d59314d29237bdb14c48883af10ba24. 

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Case: TC-001 Details</title>
+    <style>
+        .detailed-descriptions {
+            margin-top: 50px;
+            padding: 20px;
+        }
+        .test-case-detail {
+            margin-bottom: 40px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-case-detail h3 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #007bff;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="detailed-descriptions">
+        <div id="TC-001" class="test-case-detail">
+            <h3>Test Case: Basic form creation from MFS submission</h3>
+            <div class="test-case">
+                <h4>Test Case ID</h4>
+                <p>#TC-001</p>
+    
+                <h4>Test Scenario</h4>
+                <p>Verify that a Creditor Invoice form is created when a supplier submits an invoice via MFS (Mojo for Suppliers)</p>
+    
+                <h4>Test Entry Requirement / Prerequisites</h4>
+                <ul>
+                    <li>Mojo v7.0.0</li>
+                    <li>MFS (Mojo for Suppliers) enabled and configured</li>
+                    <li>Valid supplier account with MFS access</li>
+                    <li>Test user with appropriate security group access</li>
+                    <li>Works Contract configured in the system</li>
+                </ul>
+    
+                <h4>Test Data</h4>
+                <ul>
+                    <li>Supplier Account: TEST_SUPP_001</li>
+                    <li>Contract Reference: CONT_001</li>
+                    <li>Invoice Amount: £1000.00</li>
+                    <li>VAT Rate: 20%</li>
+                    <li>VAT Amount: £200.00</li>
+                    <li>Gross Amount: £1200.00</li>
+                    <li>Document Reference: INV_001</li>
+                </ul>
+    
+                <h4>Browser / Device</h4>
+                <ul>
+                    <li>Chrome v120.0.6099.129</li>
+                    <li>Edge v120.0.2210.91</li>
+                    <li>Firefox v121.0</li>
+                </ul>
+    
+                <h4>Test Steps</h4>
+                <ol>
+                    <li>Log into MFS as test supplier</li>
+                    <li>Navigate to Submit Invoice section</li>
+                    <li>Enter invoice details using test data</li>
+                    <li>Select the Works Contract</li>
+                    <li>Submit the invoice</li>
+                    <li>Log into Mojo as administrator</li>
+                    <li>Navigate to My Activities</li>
+                    <li>Check for new Creditor Invoice form</li>
+                </ol>
+    
+                <h4>Expected Outcome</h4>
+                <ul>
+                    <li>Creditor Invoice form is created in Mojo</li>
+                    <li>Form appears in My Activities list</li>
+                    <li>Form is associated with correct supplier and contract</li>
+                </ul>
+    
+                <h4>Actual Outcome</h4>
+                <ul>
+                    <li>[To be run after test execution]</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

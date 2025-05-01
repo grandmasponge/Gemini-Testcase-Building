@@ -1,0 +1,1 @@
+Role:User|prompt:Generate a detailed test case description of ***TC-005*** using the provided 	“test-case-description" template|files:./templates/template_test_description.txt

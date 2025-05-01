@@ -1,9 +1,10 @@
 mod prompt;
 mod state;
-use std::{env::VarError, fmt::Display, fs::OpenOptions, io::Read};
+use std::{env::VarError, fmt::Display, fs::OpenOptions, io::Read, os::macos::raw::stat, time::Duration};
 use dotenv::dotenv;
 use gemini_client_rs::GeminiClient;
 use state::{GeminiResponse, GeminiState};
+use tokio::time::sleep;
 
 
 
@@ -29,16 +30,6 @@ impl Display for GeminiError {
         write!(f, "Gemini failed")
     }
 }
-
-fn extract_html(response: GeminiResponse) -> Result<(), GeminiError>{
-    let html_split = response.response.split("```");
-    for content in html_split {
-        
-    }
-    Ok(())
-}
-
-
 
 fn retrive_document(filename: &str) -> Result<String, GeminiError> {
     let file_res = OpenOptions::new().read(true).create(false).open(filename);
@@ -83,14 +74,24 @@ async fn main() {
     let client = GeminiClient::new(api_key.clone());
     let model_name = "gemini-2.0-flash";
 
-    let state = GeminiState::new(client, model_name, api_key);
+    let mut state = GeminiState::new(client, model_name, api_key);
     
     //prompt 1 Inital prompt
-    state.prompt("./prompt/inital-prompt.txt").await.unwrap();
+    state.prompt("./prompt/inital-prompt.txt").await
+    .unwrap()
+    .save_to_file();
+    //sleep to prevent overloading
+    sleep(Duration::from_secs(5)).await;
     //prompt 2 Require generation
-
+    let res = state.prompt("./prompt/gen-requirements.txt")
+    .await
+    .unwrap();
+    res.save_to_file();
     //prompt 3 Generate test
-
+    let res = state.prompt("./prompt/gen-test-cases.txt").
+    await
+    .unwrap();
+    res.save_to_file();
     //prompt 4 Generate test case description
 
     //prompt 5 Explain test case properties

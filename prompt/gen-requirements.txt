@@ -1,0 +1,19 @@
+Role:User|Prompt:Follow the instructions below and delimit each instructions by & 
+
+Generate and extract requirements from “mp-8660-specification" provided & 
+
+Create a table for these requirements with the following columns 
+
+REQ-ID(requirement ID in  REQ-XXX format) 
+
+TYPE (functional, non-functional, technical, Security ...) 
+
+DESCRIPTION(description of requirement) 
+
+SOURCE(the section of the document the requirement came from) 
+
+EXACT-TEXT-FROM-SPECIFICATION(the direct quote the requirement was extracted from ) & 
+
+Provide the table in html format use CSS styling for easier reading & 
+
+Do not invent or extrapolate requirements & |files:./documents/mp-8660.txt

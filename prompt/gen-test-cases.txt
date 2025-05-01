@@ -1,0 +1,13 @@
+Role:User|prompt:using only the knowledge base given to you follow the steps listed below execute the steps one by one and delimit them by  
+
+&- Use your knowledge base to analyse and extract all required test cases & 
+
+- Include all edge cases and error handling, the priority, test type and ISO category& 
+
+- ISO category values should be taken from the knowledge base provided & 
+
+- Use the provided test-case-template.txt& 
+
+- generate all testcases that cover the requirements generated previously& 
+
+- Only generate the html test case table with all the extracted test cases including the coverage status modal &|files:./templates/template_test_case.txt
